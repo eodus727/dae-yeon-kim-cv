@@ -1,0 +1,779 @@
+\documentclass[11pt, a4paper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 0, 0} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Dae Yeon Kim_CV},
+    pdfauthor={Dae Yeon Kim},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=blue
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+\usepackage{charter}
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column seperation
+\pagenumbering{gobble} % no page numbering
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\Large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\scriptsize$\bullet$}}$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0 cm,
+        parsep=0.0 cm,
+        partopsep=0.0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0 cm + 0.00001 cm
+    }{
+        0 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{onecolentryleft}{
+    \begin{adjustwidth}{1em}{0pt}  % ← 왼쪽만 2em 들여쓰기
+}{
+    \end{adjustwidth}
+}
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 13 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedright \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{pubitem}[2]{%
+  \begin{tabularx}{\textwidth}{@{}p{1cm}X@{}}
+  #1 & #2 \\
+  \end{tabularx}
+}{}
+
+
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{2.2cm, \fill, 3.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries
+
+\newenvironment{threecolentrywide}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{3.5cm, \fill, 2 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries (wide version)
+
+\newenvironment{threecolentryteach}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{3.5cm, \fill, 2.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries (wide version)
+
+\newenvironment{threecolentryref}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{4.2cm, \fill, 4.2 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries (wide version)
+
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Last updated in September 2024}\hspace{\widthof{Last updated in September 2024}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+
+
+\begin{document}
+
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{$||$}
+
+    \begin{header}
+        \fontsize{25 pt}{25 pt}\selectfont Dae Yeon Kim 
+        \fontsize{13 pt}{13 pt}\selectfont Ph.D.
+        \vspace{5 pt}
+
+        \fontsize{12}{12}
+        \mbox{Assistant Professor, Chemical and Biomolecular Engineering, Chonnam National University}
+              
+        Email \mbox{\hrefWithoutArrow{mailto:daeyeon_kim@jnu.ac.kr}{ daeyeon\_kim@jnu.ac.kr}}
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://www.linkedin.com/in/dae-yeon-kim-82145823b/}{LinkedIn}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://scholar.google.com/citations?user=p81LeB8AAAAJ&hl=ko}{Google Scholar}}%
+        \kern 5.0 pt%
+       
+    \end{header}
+
+    \vspace{5 pt}
+
+
+    \section{EDUCATION}
+    
+         \begin{threecolentry}
+         {\textbf{Ph.D.}}
+         {Aug 2023}
+         {\textbf{Seoul National University}, Seoul, Korea\\School of Chemical and Biological Engineering\\[0.5em]
+         \sloppy
+         Thesis: “A study on particle deposition and clogging dynamics of colloidal suspensions in complex flow”\\(Advisor: Prof. \hrefWithoutArrow{https://scholar.google.com/citations?user=UIVKtYQAAAAJ&hl=en&oi=ao}{Kyung Hyun Ahn})}
+        \end{threecolentry}
+        
+        \vspace{0.3 cm}
+        
+        \begin{threecolentry}
+         {\textbf{B.S.}}
+         {Feb 2017}
+         {\textbf{Sogang University}, Seoul, Korea\\Department of Chemical and Biomolecular Engineering\\[0.5em]
+         \sloppy
+         Graduation honors, \textit{Summa Cum Laude}}
+        \end{threecolentry}
+
+        
+
+    \section{PROFESSIONAL EXPERIENCES}
+    
+         \begin{threecolentrywide}
+         {\textbf{Assistant \\Professor}}
+         {Mar 2026 – Present}
+         {Department of Chemical and Biomolecular Engineering\\Chonnam National University, Yeosu-si, Jeollanam-do, Korea}
+         
+        \end{threecolentrywide}
+        
+        \vspace{0.3 cm}   
+        \begin{threecolentrywide}
+         {\textbf{Postdoctoral Scholar}}
+         {Feb 2025 – Jan 2026}
+         {Department of Chemical Engineering\\Stanford University, Stanford, CA, USA\\(Advisor: Prof. \hrefWithoutArrow{https://scholar.google.com/citations?user=rLwbraYAAAAJ&hl=en}{Sho Takatori})}
+        \end{threecolentrywide}
+        
+        \vspace{0.3 cm}
+        
+       \begin{threecolentrywide}
+         {\textbf{Postdoctoral Scholar}}
+         {Mar 2024 – Jan 2025}
+         {Department of Chemical Engineering\\University of California, Santa Barbara, Santa Barbara, CA, USA\\(Advisor: Prof. \hrefWithoutArrow{https://scholar.google.com/citations?user=rLwbraYAAAAJ&hl=en}{Sho Takatori})}
+        \end{threecolentrywide}
+        
+        \vspace{0.3 cm}
+        
+       \begin{threecolentrywide}
+         {\textbf{Postdoctoral Researcher}}
+         {Sep 2023 – Jan 2024}
+         {Center for Coating Materials and Processing\\Seoul National University, Seoul, Korea\\(Advisor: Prof. \hrefWithoutArrow{https://scholar.google.com/citations?user=UIVKtYQAAAAJ&hl=en&oi=ao}{Kyung Hyun Ahn})}
+        \end{threecolentrywide}
+        
+
+      
+
+    \section{RESEARCH EXPERIENCES}
+    
+    \subsection{Research Skills}
+         \begin{twocolentry}
+         {\begin{highlights}
+            \item Design and fabrication of microchannel
+            \item Fluid visualization and PIV
+            \item Pressure drop measurement
+           
+         \end{highlights}}
+         {Microfluidics}
+         \end{twocolentry}
+         
+         \vspace{0.2 cm}
+         
+         \begin{twocolentry}
+         {\begin{highlights}
+            \item Rotational rheometer (ARES, AR-G2, DHR)
+            \item Extensional rheometer (Capillary Breakup Extensional Rheometer)
+            \item Passive/Active microrheology (Optical tweezer)
+         \end{highlights}}
+         {Rheometry}
+         \end{twocolentry}
+
+         \vspace{0.2 cm}
+       
+        \begin{twocolentry}
+         {\begin{highlights}
+            \item Measurement of elongational property of complex fluids \\(polymer solution, colloidal suspension)
+            \item Direct visualization of thinning filament surface via high-speed camera
+         \end{highlights}}
+         {Capillary breakup}
+         \end{twocolentry}
+
+        \vspace{0.2 cm}
+        
+        \begin{twocolentry}
+         {\begin{highlights}
+            \item Measurement of inter-particle interaction (e.g. Hydrodynamic interaction)
+            \item Microrheology of soft matter
+         \end{highlights}}
+         {Optical tweezer}
+         \end{twocolentry}
+         
+        \vspace{0.2 cm}
+        
+        \begin{twocolentry}
+         {\begin{highlights}
+            \item Soft vesicle labeling (SUV, GUV)
+            \item Colloids and bacteria labeling
+         \end{highlights}}
+         {Chemical labeling}
+         \end{twocolentry}
+
+         \vspace{0.2 cm}
+        
+        \begin{twocolentry}
+         {\begin{highlights}
+            \item Characterization and labeling
+            \item Quantitative imaging analysis
+         \end{highlights}}
+         {Bacterial culturing}
+         \end{twocolentry}
+         
+         \vspace{0.2 cm}
+        
+        \begin{twocolentry}
+         {\begin{highlights}
+            \item Image processing and quantitative analysis (MATLAB, Python)
+            \item CFD simulation (COMSOL)
+         \end{highlights}}
+         {Analysis tool}
+         \end{twocolentry}
+         
+    \subsection{Research Interests}
+              
+        \begin{onecolentry}
+         {Complex materials and soft matter physics}
+        \end{onecolentry}
+        \vspace{0.05 cm}
+        \begin{onecolentryleft}
+         {\begin{highlights}
+            \item Colloidal suspension rheology
+            \item Fluid-mediated interactions between colloids
+            \item Active matter rheology and control
+            \item Colloidal fouling onto a membrane surface (complex interactions between foulants and membrane)
+            \item Flow instability of viscoelastic fluid
+         \end{highlights}
+         }
+         \end{onecolentryleft}
+               
+         \vspace{0.2 cm}
+         
+        \begin{onecolentry}
+         {Heterogeneity control of industrial slurry (e.g. lithium-ion batteries, fuel cells, CMP slurry)}
+        \end{onecolentry}
+        \vspace{0.05 cm}
+        \begin{onecolentryleft}
+         {\begin{highlights}
+            \item Stability control of colloidal slurry 
+            \item Characterization of slurry for quality control
+         \end{highlights}
+         }
+         \end{onecolentryleft}
+               
+         \vspace{0.2 cm}
+
+        \begin{onecolentry}
+         {Data-driven machine learning classification}
+        \end{onecolentry}
+        \vspace{0.05 cm}
+        \begin{onecolentryleft}
+         {\begin{highlights}
+            \item Characterization of complex fluid
+            \item Clogging and fouling prediction
+         \end{highlights}
+         }
+         \end{onecolentryleft}
+               
+         \vspace{0.2 cm}
+
+        \begin{onecolentry}
+         {Image-based rheological properties measurement}
+        \end{onecolentry}
+        \vspace{0.05 cm}
+        \begin{onecolentryleft}
+         {\begin{highlights}
+            \item Discovery of constitutive relations for complex fluids
+            \item Dynamics of soft materials with active forcing
+         \end{highlights}
+         }
+         \end{onecolentryleft}
+               
+       
+         
+    
+    \section{PUBLICATIONS}
+    \subsection{Peer-reviewed Journal Articles}
+    * equal contribution\hspace{1.5em}\ensuremath{^{\dagger}} co-corresponding
+    
+    \vspace{0.5em}
+    
+    \begin{pubitem}{13.}{Haegyo Jeong, Minsun Hwang, 
+    \textbf{\underline{Dae Yeon Kim\ensuremath{^{\dagger}}}}, 
+    Seon Yeop Jung\ensuremath{^{\dagger}}, 
+    Influence of fluid viscosity and cavity length on particle transport and deposition in expansion-contraction microchannels, 
+    \textit{Korea-Australia Rheology Journal}, \textbf{2026}, online published. \href{https://doi.org/10.1007/s13367-026-00163-7}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+
+    \begin{pubitem}{12.}{\textbf{\underline{Dae Yeon Kim*}}, Sachit G. Nagella*, Saksham Malik, Nayeon Park, Jaewook Nam, Eric S.G. Shaqfeh, Sho C. Takatori, Colloidal hydrodynamic interactions in viscoelastic fluids, \textit{Soft Matter}, \textbf{2025}, 21, 8035--8048. \href{https://pubs.rsc.org/en/content/articlelanding/2025/sm/d5sm00874c}{[Link]}} 
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{11.}{Minsun Hwang, \textbf{\underline{Dae Yeon Kim}},  Kyung Hyun Ahn, Sung Sik Lee, Seon Yeop Jung, 
+    Particle deposition in colloid-polymer suspensions: Complex interplay between flow characteristics and polymer interactions, 
+    \textit{Physics of Fluids}, \textbf{2025}, 37, 073389. \href{ https://doi.org/10.1063/5.0277046}{[Link]}}
+    \end{pubitem}
+
+    \vspace{0.3em}
+
+
+    
+    \begin{pubitem}{10.}{\textbf{\underline{Dae Yeon Kim*}}, Sachit G. Nagella*, Kyu Hwan Choi, Sho C. Takatori, 
+    Direct experimental measurement of many-body hydrodynamic interactions with optical tweezers, 
+    \textit{Physical Review Fluids}, \textbf{2025}, 10, 064301. \href{ https://doi.org/10.1103/PhysRevFluids.10.064301}{[Link]}}
+    \end{pubitem}
+
+    \vspace{0.3em}
+
+    
+    \begin{pubitem}{9.}{Woobin Yi*, \textbf{\underline{Dae Yeon Kim*}}, Howon Jin, Sangwoong Yoon, Kyung Hyun Ahn, Early detection of pore clogging in microfluidic systems with 3D convolutional neural network, 
+    \textit{Separation and Purification Technology}, \textbf{2025}, 359, 130428. 
+    \href{https://doi.org/10.1016/j.seppur.2024.130428}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{8.}{Young Jin Lee, \textbf{\underline{Dae Yeon Kim}}, Kyung Hyun Ahn, 
+    Particulate fouling simulation in unit micropore using a hydrodynamically coupled Lagrangian framework, 
+    \textit{Desalination}, \textbf{2025}, 593, 118255. 
+    \href{https://doi.org/10.1016/j.desal.2024.118255}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{7.}{Minsun Hwang, \textbf{\underline{Dae Yeon Kim}}, Seon Yeop Jung, Kyung Hyun Ahn, 
+    Effect of fluid viscosity on the deposition of colloidal particles in an expansion-contraction microchannel flow, 
+    \textit{Nihon Reoroji Gakkaishi}, \textbf{2024}, 52 (4), 231--240.     \href{https://www.jstage.jst.go.jp/article/rheology/52/4/52_231/_article}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{6.}{Wonsik Shin, Joung Sook Hong, \textbf{\underline{Dae Yeon Kim}}, Si Yoon Kim, Kyu Hyun, Jun Dong Park, Kyung Hyun Ahn, 
+    Effect of cellulose nanocrystals on the emulsion stability and rheological properties of microalgal Pickering emulsions, 
+    \textit{Algal Research}, \textbf{2024}, 83, 103731. 
+    \href{https://doi.org/10.1016/j.algal.2024.103731}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{5.}{Young Jin Lee, Howon Jin, \textbf{\underline{Dae Yeon Kim}}, Seunghoon Kang, Kyung Hyun Ahn, 
+    Lagrangian-based simulation method using constrained Stokesian dynamics for particulate flows in microchannel, 
+    \textit{Journal of Fluid Mechanics}, \textbf{2024}, 990, A3. 
+    \href{https://doi.org/10.1017/jfm.2024.493}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{4.}{\textbf{\underline{Dae Yeon Kim}}, Seon Yeop Jung, Young Jin Lee, Howon Jin, Kyung Hyun Ahn, 
+    From successive deposition to clogging of poly(styrene) particles in the cross-flow through a T-shaped microchannel, 
+    \textit{Separation and Purification Technology}, \textbf{2023}, 322, 124263. 
+    \href{https://doi.org/10.1016/j.seppur.2023.124263}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{3.}{\textbf{\underline{Dae Yeon Kim}}, Seon Yeop Jung, Young Jin Lee, Kyung Hyun Ahn, 
+    Effect of colloidal interactions and hydrodynamic stress on particle deposition in a single micropore, 
+    \textit{Langmuir}, \textbf{2022}, 38 (19), 6013--6022. \href{https://pubs.acs.org/doi/10.1021/acs.langmuir.2c00237}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{2.}{\textbf{\underline{Dae Yeon Kim}}, Kyung Hyun Ahn, 
+    Effect of operating conditions on the sessile drop oscillation of PEO solution in the capillary thinning process, 
+    \textit{Nihon Reoroji Gakkaishi}, \textbf{2021}, 49 (2), 127--133. \href{https://www.jstage.jst.go.jp/article/rheology/49/2/49_127/_article}{[Link]}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{1.}{Youngseok Kim, \textbf{\underline{Dae Yeon Kim}}, Joung Sook Hong, Kyung Hyun Ahn, 
+    Agglomerate breakup of destabilized polystyrene particles under a cross-channel planar extensional flow, 
+    \textit{Langmuir}, \textbf{2018}, 34 (38), 11454--11463. \href{https://pubs.acs.org/doi/10.1021/acs.langmuir.8b01958}{[Link]}}
+    \end{pubitem}
+    
+
+
+    \subsection{Submitted/in-progress}
+
+
+    \begin{pubitem}{1.}{\textbf{\underline{Dae Yeon Kim}}, Izzie Allydice, Sho C. Takatori, 
+    Colloidal hydrodynamic interaction in bacterial active bath, \textit{in preparation.}}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+
+    
+    %\begin{pubitem}{1.}{\textbf{\underline{Dae Yeon Kim*}}, Sachit G. Nagella*, Saksham Malik, Nayeon Park, Jaewook Nam, Eric S.G. Shaqfeh, Sho C. Takatori, Colloidal hydrodynamic interactions in viscoelastic fluids, \textit{under review.} \href{https://arxiv.org/abs/2508.11948}{[Link]}} 
+    %\end{pubitem}
+    
+    
+
+
+   
+       
+
+
+    
+    \section{PRESENTATIONS}
+    \subsection{International Conference}
+
+    \begin{pubitem}{9.}{Fluid-mediated rotational coupling and hydrodynamic interactions in colloidal particles using optical trapping, 
+    \textit{APS Global Physics Summit (APS March Meeting 2025)}. 16 – 21 Mar 2025, Anaheim, CA, USA.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{8.}{Successive deposition of poly(styrene) particles in cross-flow through T-shaped microchannel, 
+    \textit{The 19th International Congress on Rheology (ICR 2023)}. 29 July – 4 Aug 2023, Athens, Greece.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{7.}{Effect of salt concentration and flow rate on clogging dynamics at the single micro-pore. 
+    \textit{The 8th Pacific Rim Conference on Rheology (PRCR 2023)}. 15 – 19 May 2023, Vancouver, BC, Canada.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{6.}{Effect of salt concentration and flow rate on clogging dynamics at the single micro-pore. 
+    \textit{The 93rd Annual Meeting of the Society of Rheology (SoR 93rd Annual Meeting)}. 9 – 13 Oct 2022, Chicago, IL, USA.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{5.}{Effect of salt concentration and flow rate on clogging dynamics at the single micro-pore. 
+    \textit{11th Korea-Australia Rheology Conference (KARC 2021)}. 24 – 25 Nov 2021, Virtual.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{4.}{The effect of operating condition and rheological properties of PEO solution on the sessile drop oscillation during elasto-capillary thinning. 
+    \textit{International Union of Materials Research Societies-International Conference in Asia (IUMRS-ICA 2020)}. 23 – 26 Feb 2021, Virtual.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{3.}{Effect of rheological properties of PEO solution on the sessile drop oscillation during the early stages of elasto-capillary thinning transition. 
+    \textit{The 15th International Workshop for East Asian Young Rheologists (IWEAYR 2020)}. 8 – 10 Jan 2020, Changchun, China.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{2.}{Effect of rheological properties of PEO solution on the sessile drop oscillation during the early stages of elasto-capillary thinning transition. 
+    \textit{Annual European Rheology Conference (AERC 2019)}. 8 – 11 Apr 2019, Portoroz, Slovenia.}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    
+    \begin{pubitem}{1.}{Agglomerate breakup of destabilized polystyrene particles under a cross-channel planar extensional flow. 
+    \textit{The 14th International Workshop for East Asian Young Rheologists (IWEAYR 2019)}. 23 – 26 Jan 2019, Nagoya, Japan.}
+    \end{pubitem}
+
+    \subsection{Others (2023 – Present)}
+
+    \begin{pubitem}{4.}{Probing hydrodynamic interactions and rheology in complex fluids using optical laser tweezers.
+    \textit{2026 Annual Meeting of the Korean Society of Rheology}. 7 – 8 May 2026, Seoul, Korea}
+    \end{pubitem}
+
+    \begin{pubitem}{3.}{Prediction of membrane fouling via particle transport phenomena and ai-based analysis. 
+    \textit{2026 Spring Conference of the Korean Society for Energy}. 15 – 17 Apr 2026, Yeosu, Korea}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+    \begin{pubitem}{2.}{Direct experimental measurement of hydrodynamic interactions using optical tweezers. 
+    \textit{Shaqfeh Group Seminar, Stanford University}. May 2025}
+    \end{pubitem}
+    
+    \vspace{0.3em}
+
+    \begin{pubitem}{1.}{A study on particle deposition and clogging dynamics of colloidal suspensions in complex flow. 
+    \textit{EEPL Group Seminar, Dankook University}. Aug 2023}
+    \end{pubitem}
+
+
+    
+    \section{TEACHING AND MENTORING}
+    
+        \begin{threecolentryteach}
+             {\textbf{Teaching}\\(\textcolor{red}{S:Spring}, \textcolor{blue}{F:Fall})}
+             {2026\textcolor{red}{S}\\2026\textcolor{red}{S}}
+             {General Chemistry I (Chonnam National University)\\Chemical Reaction Engineering (Chonnam National University)}
+        \end{threecolentryteach}
+
+        \vspace{0.2em}
+        
+        \begin{threecolentryteach}
+        {}{Mar 2018 – Jan 2019}{Creative Academy: Basic Chemical Engineering\\(Janghoon High school, Seoul)}
+
+        \end{threecolentryteach}
+
+
+
+        
+        \vspace{0.5em} 
+        
+        \begin{threecolentryteach}
+             {\textbf{TA}}
+             {Spring. 2018\\Fall. 2019}
+             {Transport Phenomena (Seoul National University)\\Introduction to Chemical Engineering (Seoul National University)}
+        \end{threecolentryteach}
+        
+
+        
+        \vspace{0.3cm} 
+        
+        \begin{threecolentryteach}
+             {\textbf{Mentoring}}
+             {Jul 2025 – Present}
+             {2025 ChemE REU Program\\Mentee: Izzie Allydice (Stanford '28)}
+        \end{threecolentryteach}
+
+        \vspace{0.2em}
+
+        \begin{threecolentryteach}
+             {}
+             {Mar 2022 – Jul 2025}
+             {EEPL Group, Dankook University\\Mentee: Minsun Hwang (B.S.–M.S. Integrated Program)}
+        \end{threecolentryteach}
+      
+
+
+    
+    \section{AWARDS AND HONORS}
+        \begin{threecolentrywide}
+            {\textbf{Best Paper Award}}
+            {Jul 2022}
+            {DONGJIN Best Paper Award\\(supported by DONGJIN SEMICHEM CO., LTD.)}
+        \end{threecolentrywide}
+
+        \vspace{0.3cm}
+        
+        \begin{threecolentrywide}
+            {\textbf{Best Presentation Award}}
+            {Jan 2020}
+            {Best Presentation Award of 15th IWEAYR\\
+            (The 15th International Workshop for East Asian Young Rheologists)}
+        \end{threecolentrywide}
+
+        \vspace{0.3cm}
+        \begin{threecolentrywide}
+            {\textbf{Academic Scholarship}}
+            {Sep 2013 – Aug 2016}
+            {Scholarship for academic excellence\\(Sogang University)}
+        \end{threecolentrywide}
+
+
+    \section{OTHER ACTIVITIES}
+    
+        % \begin{threecolentrywide}
+        %     {\textbf{Lab manager}}
+        %     {Jan 2021 – Jan 2022}
+        %     {Lab of Microrheology\\School of Chemical and Biological Engineering\\Seoul National University, Korea}
+        % \end{threecolentrywide}
+
+        % \vspace{0.3cm}
+
+        \begin{threecolentrywide}
+            {\textbf{Member}}
+            {Jan 2014 – Present}
+            {Young Engineers Honor Society (YEHS)}
+        \end{threecolentrywide}
+
+        \vspace{0.3cm}
+
+        \begin{threecolentrywide}
+            {\textbf{Student Leader}}
+            {Jan 2014 – Mar 2014}
+            {Department of Chemical and Biomolecular Engineering\\Sogang University, Korea}
+        \end{threecolentrywide}
+
+    \section{REFERENCES}
+        \begin{threecolentryref}
+            {\textbf{Dr. Kyung Hyun Ahn}}
+            {\hrefWithoutArrow{ahnnet@snu.ac.kr}{ahnnet@snu.ac.kr}}
+            %+82-2-880-1897
+            {Professor,\\School of Chemical and Biological Engineering,\\Seoul National University, Seoul, Korea}
+        \end{threecolentryref}
+
+        \vspace{0.3cm}
+
+        \begin{threecolentryref}
+            {\textbf{Dr. Sho Takatori}}
+            {\hrefWithoutArrow{stakatori@stanford.edu}{stakatori@stanford.edu}}
+            %+1-805-893-7089
+            {Associate Professor,\\Department of Chemical Engineering,\\Stanford University, Stanford, CA}
+        \end{threecolentryref}
+
+        \vspace{0.3cm}
+
+        \begin{threecolentryref}
+            {\textbf{Dr. Seon Yeop Jung}}
+            {\hrefWithoutArrow{seon27@dankook.ac.kr}{seon27@dankook.ac.kr}}
+            %+82-31-8005-3554
+            {Assistant Professor,\\Department of Chemical Engineering,\\Dankook University, Gyeonggi-do, Korea}
+        \end{threecolentryref}
+
+        % \vspace{0.3cm}
+
+        % \begin{threecolentryref}
+        %     {\textbf{Dr. Jaewook Nam}}
+        %     {\hrefWithoutArrow{jaewooknam@snu.ac.kr}{jaewooknam@snu.ac.kr}}
+        %     %+82-2-880-1654
+        %     {Professor,\\School of Chemical and Biological Engineering,\\Seoul National University, Seoul, Korea}
+        % \end{threecolentryref}
+
+        % \vspace{0.3cm}
+
+        % \begin{threecolentryref}
+        %     {\textbf{Dr. Eric S.G. Shaqfeh}}
+        %     {\hrefWithoutArrow{esgs@stanford.edu}{esgs@stanford.edu}}
+        %     %(650) 723-3764 (office)
+        %     {Professor,\\Department of Chemical Engineering, Department of Mechanical Engineering\\Stanford University, Stanford, CA}
+        % \end{threecolentryref}
+
+        
+    
+
+
+    
+
+\end{document}

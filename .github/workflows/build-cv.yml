@@ -1,0 +1,29 @@
+name: Build CV PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'CV_DYK.tex'
+      - '.github/workflows/build-cv.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX to PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: CV_DYK.tex
+
+      - name: Commit updated PDF
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-build CV PDF"
+          file_pattern: CV_DYK.pdf
