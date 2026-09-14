@@ -191,7 +191,7 @@
         \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
         \LenToUnit{\paperheight-1.0 cm}
     ){\vtop{{\null}\makebox[0pt][c]{
-        \small\color{gray}\textit{Last updated in September 2024}\hspace{\widthof{Last updated in September 2024}}
+        \small\color{gray}\textit{Last updated on \today}\hspace{\widthof{Last updated on September 2024}}
     }}}%
   }%
 }%
@@ -210,6 +210,8 @@
     }
     \newsavebox\ANDbox
     \sbox\ANDbox{$||$}
+
+    \placelastupdatedtext
 
     \begin{header}
         \fontsize{25 pt}{25 pt}\selectfont Dae Yeon Kim 
