@@ -30,5 +30,6 @@ CV_DYK.tex를 수정해서 push하면 GitHub Actions가 자동으로 CV_DYK.pdf�
 
 ## 새 내용 추가 시 진행 순서
 1. 요청받은 내용을 위 규칙에 맞게 적절한 섹션, 적절한 위치에 삽입
-2. 로컬에 LaTeX 배포판이 있으면 pdflatex를 2회 돌려서 참조나 페이지 번호가 깨지지 않는지 확인 (없으면 생략, 최종 컴파일은 GitHub Actions가 담당)
+2. 로컬에 LaTeX 배포판이 있으면 pdflatex를 2회 돌려서 참조나 페이지 번호가 깨지지 않는지 확인 (없으면 생략, 최종 컴파일은 GitHub Actions가 담당). 저장소 밖 임시 폴더에 복사해서 돌린다 (추적 중인 CV_DYK.pdf를 덮어쓰지 않도록)
 3. git commit 후 push
+4. **항상 PDF까지 확인한다** (2026-10-26 지시): GitHub Actions가 "Auto-build CV PDF" 커밋을 올릴 때까지 기다린 뒤 (보통 2–4분, 10분 넘으면 보고) `git pull --rebase`로 로컬 CV_DYK.pdf를 받고, PDF에 바꾼 내용이 들어갔는지 확인하고 보고한다. 기다리는 동안 이 저장소에 다른 push를 하지 않는다.
