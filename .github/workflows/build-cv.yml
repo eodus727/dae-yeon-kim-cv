@@ -27,3 +27,6 @@ jobs:
         with:
           commit_message: "Auto-build CV PDF"
           file_pattern: CV_DYK.pdf
+
+      - name: Purge jsDelivr cache
+        run: curl -sS --retry 3 "https://purge.jsdelivr.net/gh/eodus727/dae-yeon-kim-cv@main/CV_DYK.pdf"
