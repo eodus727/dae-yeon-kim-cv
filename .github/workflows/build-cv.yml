@@ -29,4 +29,15 @@ jobs:
           file_pattern: CV_DYK.pdf
 
       - name: Purge jsDelivr cache
-        run: curl -sS --retry 3 "https://purge.jsdelivr.net/gh/eodus727/dae-yeon-kim-cv@main/CV_DYK.pdf"
+        # jsDelivr caches the @main -> commit mapping for a few minutes, so purge until it serves the new PDF
+        run: |
+          url="gh/eodus727/dae-yeon-kim-cv@main/CV_DYK.pdf"
+          for i in $(seq 1 15); do
+            sleep 60
+            curl -sS --retry 3 "https://purge.jsdelivr.net/$url" > /dev/null
+            sleep 10
+            curl -sSL "https://cdn.jsdelivr.net/$url" -o served.pdf
+            if cmp -s served.pdf CV_DYK.pdf; then echo "jsDelivr updated (attempt $i)"; exit 0; fi
+            echo "jsDelivr still stale (attempt $i)"
+          done
+          echo "::warning::jsDelivr still serves an old CV_DYK.pdf"
