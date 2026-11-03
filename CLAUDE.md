@@ -11,7 +11,7 @@ CV_DYK.tex를 수정해서 push하면 GitHub Actions가 자동으로 CV_DYK.pdf�
 - 번호는 최신 논문이 가장 큰 숫자, 맨 위가 최신, 아래로 갈수록 오래된 논문 (내림차순)
 - 새 논문이 게재 확정되면 가장 큰 번호를 새로 부여하고 맨 위에 삽입
 - 저자 중 Dae Yeon Kim 본인은 `\textbf{\underline{...}}`로 강조
-- equal contribution은 이름 뒤에 `*`, co-corresponding은 `\ensuremath{^{\dagger}}`
+- equal contribution은 이름 뒤에 `*`, 교신저자는 단독·공동 모두 `\ensuremath{^{\dagger}}` (범례 "corresponding author", 2026-11-03). 맨 앞 이름에 †가 붙으면 제1저자이자 교신저자. 단독 저자 논문은 표시 안 함
 - 항목 사이 간격은 `\vspace{0.3em}`
 - `\subsection{Submitted/in-progress}`는 별도의 독립적인 번호 체계(1번부터), 게재 확정되면 여기서 빼고 Peer-reviewed 쪽으로 정식 서지정보(권/호/페이지/DOI)와 함께 옮길 것
 
